@@ -1,0 +1,13 @@
+myData = read_excel("New BHI Emergency 2018.xlsx")
+head(sort(myData$Frequency2018,decreasing =TRUE),n=20)
+library(ggplot2)
+
+data_complete <- myData[complete.cases(myData), ] 
+ggplot(data_complete[tail(order(data_complete$Frequency2018), ), ordered = TRUE ], ) + 
+  aes(ICD10code, Frequency2018) + geom_point() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+ggplot(data_complete[tail(order(data_complete$Frequency2018), 30), ordered = TRUE ], ) + 
+  aes(y = Frequency2018, x = reorder(ICD10code, -Frequency2018)) + geom_bar(stat='identity' ) +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + scale_y_continuous(labels = scales::unit_format(unit = "M", scale = 1e-6)) +
+  xlab('ICD 10 Codes') + ylab('Frequency of Codes Used in 2018')
